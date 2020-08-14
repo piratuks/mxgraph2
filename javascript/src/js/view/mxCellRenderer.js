@@ -920,7 +920,7 @@ mxCellRenderer.prototype.redrawLabel = function(state, forced)
 	var fontType = state.style[mxConstants.STYLE_FONTTYPE];
 	var fontFamily = state.style[mxConstants.STYLE_FONTFAMILY];
 	
-	if (fontType != null)
+	if (fontType != null && fontFamily != null)
 	{
 		var url = null;
 		
@@ -945,6 +945,19 @@ mxCellRenderer.prototype.redrawLabel = function(state, forced)
 		}
 		
 		graph.addExtFont(fontFamily, url);
+	}
+	else if (fontFamily != null) //Change old format to new one in case FType is not defined
+	{
+		for (var i = 0; graph.extFonts && i < graph.extFonts.length; i++)
+		{
+			if (graph.extFonts[i].name == fontFamily)
+			{
+				graph.setCellStyles(mxConstants.STYLE_FONTTYPE, 
+						graph.extFonts[i].url.indexOf(mxClient.GOOGLE_FONTS) == 0 ?
+						'g' : 'w:' + graph.extFonts[i].url, [state.cell]);
+				break;
+			}
+		}
 	}
 		
 	if (state.text != null && (state.text.wrap != wrapping || state.text.clipped != clipping ||
