@@ -917,7 +917,36 @@ mxCellRenderer.prototype.redrawLabel = function(state, forced)
 	var isForceHtml = (state.view.graph.isHtmlLabel(state.cell) || (value != null && mxUtils.isNode(value)));
 	var dialect = (isForceHtml) ? mxConstants.DIALECT_STRICTHTML : state.view.graph.dialect;
 	var overflow = state.style[mxConstants.STYLE_OVERFLOW] || 'visible';
-
+	var fontType = state.style[mxConstants.STYLE_FONTTYPE];
+	var fontFamily = state.style[mxConstants.STYLE_FONTFAMILY];
+	
+	if (fontType != null)
+	{
+		var url = null;
+		
+		if (fontType == 'g')
+		{
+			url = mxClient.GOOGLE_FONTS + encodeURIComponent(fontFamily).replace(/%20/g, '+');
+		}
+		else if (fontType.substr(0, 2) == 'w:')
+		{
+			url = fontType.substr(2);
+		}
+		else if (fontType == 'w') //Change old format to new one
+		{
+			for (var i = 0; graph.extFonts && i < graph.extFonts.length; i++)
+			{
+				if (graph.extFonts[i].name == fontFamily)
+				{
+					graph.setCellStyles(mxConstants.STYLE_FONTTYPE, 'w:' + graph.extFonts[i].url, [state.cell]);
+					break;
+				}
+			}
+		}
+		
+		graph.addExtFont(fontFamily, url);
+	}
+		
 	if (state.text != null && (state.text.wrap != wrapping || state.text.clipped != clipping ||
 		state.text.overflow != overflow || state.text.dialect != dialect))
 	{

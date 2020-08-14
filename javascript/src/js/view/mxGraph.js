@@ -13130,6 +13130,71 @@ mxGraph.prototype.fireGestureEvent = function(evt, cell)
 	this.fireEvent(new mxEventObject(mxEvent.GESTURE, 'event', evt, 'cell', cell));
 };
 
+
+mxGraph.prototype.addExtFont = function(fontName, fontUrl, dontRemember)
+{
+	if (fontName && fontUrl)
+	{
+		var fontId = 'extFont_' + fontName;
+
+		if (document.getElementById(fontId) == null)
+		{
+			if (fontUrl.indexOf(mxClient.GOOGLE_FONTS) == 0)
+			{
+				this.pendingCssFonts = this.pendingCssFonts? this.pendingCssFonts + 1 : 1;
+				
+				mxClient.link('stylesheet', fontUrl, null, fontId, mxUtils.bind(this, function()
+				{
+					this.pendingCssFonts--;
+				}), mxUtils.bind(this, function()
+				{
+					this.pendingCssFonts--;
+				}));
+			}
+			else
+			{
+				var head = document.getElementsByTagName('head')[0];
+				
+				// KNOWN: Should load fonts synchronously
+				var style = document.createElement('style');
+				
+				style.appendChild(document.createTextNode('@font-face {\n' +
+			            '\tfont-family: "'+ fontName +'";\n' + 
+			            '\tsrc: url("'+ fontUrl +'");\n' + 
+			            '}'));
+				
+				style.setAttribute('id', fontId);
+				var head = document.getElementsByTagName('head')[0];
+		   		head.appendChild(style);
+			}
+		}
+		
+		if (!dontRemember)
+		{
+			if (this.extFonts == null) 
+			{
+				this.extFonts = [];
+			}
+			
+			var extFonts = this.extFonts, notFound = true;
+			
+			for (var i = 0; i < extFonts.length; i++)
+			{
+				if (extFonts[i].name == fontName)
+				{
+					notFound = false;
+					break;
+				}
+			}
+			
+			if (notFound)
+			{
+				this.extFonts.push({name: fontName, url: fontUrl});
+			}
+		}
+	}
+};
+
 /**
  * Function: destroy
  * 

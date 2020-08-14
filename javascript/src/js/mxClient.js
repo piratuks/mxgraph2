@@ -244,6 +244,13 @@ var mxClient =
   			  document.location.href.indexOf('https://') < 0,
 
 	/**
+	 * Variable: GOOGLE_FONTS
+	 *
+	 * The url prefex of Google Fonts css files [Constant]
+	 */
+	GOOGLE_FONTS: 'https://fonts.googleapis.com/css?family=',
+	
+	/**
 	 * Variable: defaultBundles
 	 * 
 	 * Contains the base names of the default bundles if mxLoadResources is false.
@@ -290,7 +297,7 @@ var mxClient =
 	 * doc - Optional parent document of the link node.
 	 * id - unique id for the link element to check if it already exists
 	 */
-	link: function(rel, href, doc, id)
+	link: function(rel, href, doc, id, onload, onerror)
 	{
 		doc = doc || document;
 
@@ -311,6 +318,16 @@ var mxClient =
 			if (id)
 			{
 				link.setAttribute('id', id);
+			}
+			
+			if (onload)
+			{
+				link.onload = onload;
+			}
+			
+			if (onerror)
+			{
+				link.onerror = onerror;
 			}
 			
 			var head = doc.getElementsByTagName('head')[0];

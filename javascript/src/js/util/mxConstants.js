@@ -1641,6 +1641,14 @@
 	STYLE_FONTFAMILY: 'fontFamily',
 
 	/**
+	 * Variable: STYLE_FONTTYPE
+	 * 
+	 * Defines the key for the font type style. Possible values are 'g' for Google Fonts
+	 * or 'w:FONT_URL' for remote web fonts. The value is of type String.
+	 */
+	STYLE_FONTTYPE: 'FType',
+
+	/**
 	 * Variable: STYLE_FONTSIZE
 	 * 
 	 * Defines the key for the fontSize style (in px). The type of the value
