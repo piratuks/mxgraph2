@@ -38,6 +38,15 @@ Menus.prototype.defaultMenuItems = ['file', 'edit', 'view', 'arrange', 'extras',
 Menus.prototype.defaultFonts = ['Helvetica', 'Verdana', 'Times New Roman', 'Garamond', 'Comic Sans MS',
            		             'Courier New', 'Georgia', 'Lucida Console', 'Tahoma'];
 
+if (window.mxGraph)
+{
+	//Create a map with default fonts which is used to speed up font rendering
+	mxGraph.prototype.defaultFontsMap = Menus.prototype.defaultFonts.reduce(function(result, item, index, array) 
+	{
+		result[item] = true;
+		return result;
+	}, {});
+}
 /**
  * Adds the label menu items to the given menu and parent.
  */

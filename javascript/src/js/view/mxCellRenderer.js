@@ -946,7 +946,9 @@ mxCellRenderer.prototype.redrawLabel = function(state, forced)
 		
 		graph.addExtFont(fontFamily, url);
 	}
-	else if (fontFamily != null) //Change old format to new one in case FType is not defined
+	//Change old format to new one in case FType is not defined
+	else if (fontFamily != null 
+			&& (graph.defaultFontsMap == null || !graph.defaultFontsMap[fontFamily]))
 	{
 		for (var i = 0; graph.extFonts && i < graph.extFonts.length; i++)
 		{
