@@ -218,8 +218,12 @@
 					{
 						// Scrollbars are on the div
 						var s = graph.view.scale;
-						state.text.node.style.overflow = 'hidden';
-						var div = state.text.node.getElementsByTagName('div')[0];
+						var elm = state.text.node.children.length === 1 ? state.text.node.children[0] : state.text.node;
+						elm.style.overflow = 'hidden';
+						var div = elm.getElementsByTagName('div')[0];
+						var parentElm = elm.getElementsByClassName('erd')[0].parentNode;
+						parentElm.style.width = "100%";
+						parentElm.style.height = "100%";
 						
 						if (div != null)
 						{
